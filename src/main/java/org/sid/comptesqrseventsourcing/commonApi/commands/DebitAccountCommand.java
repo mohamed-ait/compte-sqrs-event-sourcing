@@ -1,11 +1,11 @@
 package org.sid.comptesqrseventsourcing.commonApi.commands;
 
-public class CreateAccountCommand extends BaseCommand<String>{
-    private double initialBalance;
+public class DebitAccountCommand extends BaseCommand<String>{
+    private double amount;
     private String currency;
-    public CreateAccountCommand(String id,double initialBalance, String currency) {
+    public DebitAccountCommand(String id, double amount, String currency) {
         super(id);
+        this.amount=amount;
         this.currency=currency;
-        this.initialBalance=initialBalance;
     }
 }
