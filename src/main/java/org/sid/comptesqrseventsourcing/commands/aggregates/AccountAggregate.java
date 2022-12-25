@@ -33,7 +33,7 @@ public class AccountAggregate {
     @EventSourcingHandler
     public void on(AccountCreatedEvent event){
         this.accountId= event.getId();
-        this.balance= event.getBalance();
+        this.balance= event.getInitialBalance();
         this.status=AccountStatus.CREATED;
         this.currency=event.getCurrency();
     }
