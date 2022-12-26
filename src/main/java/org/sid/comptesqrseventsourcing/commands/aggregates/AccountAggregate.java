@@ -8,6 +8,7 @@ import org.axonframework.spring.stereotype.Aggregate;
 import org.sid.comptesqrseventsourcing.commonApi.commands.CreateAccountCommand;
 import org.sid.comptesqrseventsourcing.commonApi.dtos.CreateAccountRequestDTO;
 import org.sid.comptesqrseventsourcing.commonApi.enums.AccountStatus;
+import org.sid.comptesqrseventsourcing.commonApi.events.AccountActivatedEvent;
 import org.sid.comptesqrseventsourcing.commonApi.events.AccountCreatedEvent;
 
 @Aggregate
@@ -36,5 +37,10 @@ public class AccountAggregate {
         this.balance= event.getInitialBalance();
         this.status=AccountStatus.CREATED;
         this.currency=event.getCurrency();
+        AggregateLifecycle.apply(new AccountActivatedEvent(event.getId(),AccountStatus.ACTIVATED));
+    }
+    @EventSourcingHandler
+    public void on(AccountActivatedEvent event){
+        this.status=event.getStatus();
     }
 }
