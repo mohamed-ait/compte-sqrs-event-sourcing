@@ -1,8 +1,8 @@
 package org.sid.comptesqrseventsourcing.query.repositories;
 
 import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.Operation;
+import org.sid.comptesqrseventsourcing.query.entities.Operation;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface OperationRepository extends JpaRepository<Long, Operation> {
+public interface OperationRepository extends JpaRepository<Operation,Long> {
 }
