@@ -61,9 +61,10 @@ AggregateLifecycle.apply(new AccountCreditedEvent(
     public void on(AccountCreditedEvent event){
         this.balance+=event.getAmount();
     }
+    @CommandHandler
     public void handler(DebitAccountCommand debitAccountCommand){
         if(debitAccountCommand.getAmount()<0) throw new AmountNegativeException("amount should not be negative");
-        if(this.balance<debitAccountCommand.getAmount()) throw new BalanceNotSufficientException("balance not sufficient exception --->"+balance),
+        if(this.balance<debitAccountCommand.getAmount()) throw new BalanceNotSufficientException("balance not sufficient exception --->"+balance);
         AggregateLifecycle.apply(new AccountDebitedEvent(
                 debitAccountCommand.getId(),
                 debitAccountCommand.getAmount(),
@@ -72,6 +73,6 @@ AggregateLifecycle.apply(new AccountCreditedEvent(
     }
     @EventSourcingHandler
     public void on(AccountDebitedEvent event){
-        this.balance+=event.getAmount();
+        this.balance-=event.getAmount();
     }
 }
