@@ -6,6 +6,7 @@ import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.eventsourcing.eventstore.EventStore;
 import org.sid.comptesqrseventsourcing.commonApi.commands.CreateAccountCommand;
 import org.sid.comptesqrseventsourcing.commonApi.commands.CreditAccountCommand;
+import org.sid.comptesqrseventsourcing.commonApi.commands.DebitAccountCommand;
 import org.sid.comptesqrseventsourcing.commonApi.dtos.CreateAccountRequestDTO;
 import org.sid.comptesqrseventsourcing.commonApi.dtos.CreditAccountRequestDTO;
 import org.springframework.http.HttpStatus;
@@ -33,6 +34,14 @@ public class AcountCommandController {
     @PutMapping("/credit")
     public CompletableFuture<String> creditAccount(@RequestBody CreditAccountRequestDTO request){
         CompletableFuture<String> commandResponse = commandGateway.send(new CreditAccountCommand(
+                request.getAccountId(),
+                request.getAmount(),
+                request.getCurrency()));
+        return commandResponse;
+    }
+    @PutMapping("/debit")
+    public CompletableFuture<String> debitAccount(@RequestBody DebitAccountRequestDTO request){
+        CompletableFuture<String> commandResponse = commandGateway.send(new DebitAccountCommand(
                 request.getAccountId(),
                 request.getAmount(),
                 request.getCurrency()));
