@@ -9,6 +9,7 @@ import org.sid.comptesqrseventsourcing.commonApi.commands.CreditAccountCommand;
 import org.sid.comptesqrseventsourcing.commonApi.commands.DebitAccountCommand;
 import org.sid.comptesqrseventsourcing.commonApi.dtos.CreateAccountRequestDTO;
 import org.sid.comptesqrseventsourcing.commonApi.dtos.CreditAccountRequestDTO;
+import org.sid.comptesqrseventsourcing.commonApi.dtos.DebitAccountRequestDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

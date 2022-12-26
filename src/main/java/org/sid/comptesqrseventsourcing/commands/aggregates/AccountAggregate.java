@@ -7,11 +7,14 @@ import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.spring.stereotype.Aggregate;
 import org.sid.comptesqrseventsourcing.commonApi.commands.CreateAccountCommand;
 import org.sid.comptesqrseventsourcing.commonApi.commands.CreditAccountCommand;
+import org.sid.comptesqrseventsourcing.commonApi.commands.DebitAccountCommand;
 import org.sid.comptesqrseventsourcing.commonApi.enums.AccountStatus;
 import org.sid.comptesqrseventsourcing.commonApi.events.AccountActivatedEvent;
 import org.sid.comptesqrseventsourcing.commonApi.events.AccountCreatedEvent;
 import org.sid.comptesqrseventsourcing.commonApi.events.AccountCreditedEvent;
+import org.sid.comptesqrseventsourcing.commonApi.events.AccountDebitedEvent;
 import org.sid.comptesqrseventsourcing.commonApi.exceptions.AmountNegativeException;
+import org.sid.comptesqrseventsourcing.commonApi.exceptions.BalanceNotSufficientException;
 
 @Aggregate
 public class AccountAggregate {
@@ -56,6 +59,19 @@ AggregateLifecycle.apply(new AccountCreditedEvent(
     }
     @EventSourcingHandler
     public void on(AccountCreditedEvent event){
+        this.balance+=event.getAmount();
+    }
+    public void handler(DebitAccountCommand debitAccountCommand){
+        if(debitAccountCommand.getAmount()<0) throw new AmountNegativeException("amount should not be negative");
+        if(this.balance<debitAccountCommand.getAmount()) throw new BalanceNotSufficientException("balance not sufficient exception --->"+balance),
+        AggregateLifecycle.apply(new AccountDebitedEvent(
+                debitAccountCommand.getId(),
+                debitAccountCommand.getAmount(),
+                debitAccountCommand.getCurrency()
+        ));
+    }
+    @EventSourcingHandler
+    public void on(AccountDebitedEvent event){
         this.balance+=event.getAmount();
     }
 }
