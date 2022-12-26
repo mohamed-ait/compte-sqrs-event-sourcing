@@ -5,7 +5,9 @@ import org.axonframework.commandhandling.CommandBus;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.eventsourcing.eventstore.EventStore;
 import org.sid.comptesqrseventsourcing.commonApi.commands.CreateAccountCommand;
+import org.sid.comptesqrseventsourcing.commonApi.commands.CreditAccountCommand;
 import org.sid.comptesqrseventsourcing.commonApi.dtos.CreateAccountRequestDTO;
+import org.sid.comptesqrseventsourcing.commonApi.dtos.CreditAccountRequestDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +28,14 @@ public class AcountCommandController {
         UUID.randomUUID().toString(),
         request.getInitialBalance(),
         request.getCurrency()));
+        return commandResponse;
+    }
+    @PutMapping("/credit")
+    public CompletableFuture<String> createAccount(@RequestBody CreditAccountRequestDTO request){
+        CompletableFuture<String> commandResponse = commandGateway.send(new CreditAccountCommand(
+                request.getAccountId(),
+                request.getAmount(),
+                request.getCurrency()));
         return commandResponse;
     }
     @ExceptionHandler(Exception.class)

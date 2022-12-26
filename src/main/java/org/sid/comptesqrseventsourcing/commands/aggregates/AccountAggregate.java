@@ -6,6 +6,7 @@ import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.spring.stereotype.Aggregate;
 import org.sid.comptesqrseventsourcing.commonApi.commands.CreateAccountCommand;
+import org.sid.comptesqrseventsourcing.commonApi.commands.CreditAccountCommand;
 import org.sid.comptesqrseventsourcing.commonApi.dtos.CreateAccountRequestDTO;
 import org.sid.comptesqrseventsourcing.commonApi.enums.AccountStatus;
 import org.sid.comptesqrseventsourcing.commonApi.events.AccountActivatedEvent;
@@ -42,5 +43,9 @@ public class AccountAggregate {
     @EventSourcingHandler
     public void on(AccountActivatedEvent event){
         this.status=event.getStatus();
+    }
+    @CommandHandler
+    public void handle(CreditAccountCommand creditAccountCommand){
+if(creditAccountCommand.getAmount()<0) throw new AmountNegativeException("amount should not be negative");
     }
 }
