@@ -7,14 +7,17 @@ abstract class BaseCommand<T>(
         open val  id : T
 )
 
-data class CustomerCreatedEvent(
+data class CreateCustomerCommand(
         override val id :String,
         val name :String,
         val email : String
 ):BaseCommand<String>(id)
 
-data class CustomerUpdatedEvent(
+data class UpdateCustomerCommand(
         override val id :String,
         val name :String,
         val email : String
+):BaseCommand<String>(id)
+data class DeleteCustomerCommand(
+        override val id :String,
 ):BaseCommand<String>(id)
