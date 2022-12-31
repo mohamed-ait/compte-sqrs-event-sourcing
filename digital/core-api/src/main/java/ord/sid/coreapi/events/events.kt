@@ -1,20 +1,20 @@
-package ord.sid.coreapi.commands
+package ord.sid.coreapi.events
 
 import org.axonframework.modelling.command.TargetAggregateIdentifier
 
-abstract class BaseCommand<T>(
+abstract class BaseEvent<T>(
         @TargetAggregateIdentifier
         open val  id : T
 )
 
-data class CustomerCreatedEvent(
+data class CreateCustomerCommand(
         override val id :String,
         val name :String,
         val email : String
-):BaseCommand<String>(id)
+):BaseEvent<String>(id)
 
-data class CustomerUpdatedEvent(
+data class UpdateCustomerCommand(
         override val id :String,
         val name :String,
         val email : String
-):BaseCommand<String>(id)
+):BaseEvent<String>(id)
