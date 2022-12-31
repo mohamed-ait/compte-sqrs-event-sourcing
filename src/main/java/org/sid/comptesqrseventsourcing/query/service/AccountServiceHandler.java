@@ -3,12 +3,14 @@ package org.sid.comptesqrseventsourcing.query.service;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.eventhandling.EventHandler;
+import org.axonframework.queryhandling.QueryHandler;
 import org.sid.comptesqrseventsourcing.commonApi.enums.AccountStatus;
 import org.sid.comptesqrseventsourcing.commonApi.enums.OperationType;
 import org.sid.comptesqrseventsourcing.commonApi.events.AccountActivatedEvent;
 import org.sid.comptesqrseventsourcing.commonApi.events.AccountCreatedEvent;
 import org.sid.comptesqrseventsourcing.commonApi.events.AccountCreditedEvent;
 import org.sid.comptesqrseventsourcing.commonApi.events.AccountDebitedEvent;
+import org.sid.comptesqrseventsourcing.commonApi.queries.GetAllAcountsQuery;
 import org.sid.comptesqrseventsourcing.query.entities.Account;
 import org.sid.comptesqrseventsourcing.query.entities.Operation;
 import org.sid.comptesqrseventsourcing.query.repositories.AccountRepository;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Date;
+import java.util.List;
 
 @AllArgsConstructor
 @Service
@@ -76,5 +79,9 @@ public class AccountServiceHandler {
         operationRepository.save(operation);
         account.setCurrency(event.getCurrency());
         accountRepository.save(account);
+    }
+    @QueryHandler
+    public List<Account> on(GetAllAcountsQuery query){
+        return accountRepository.findAll();
     }
 }
